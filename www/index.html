@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title></title>
+
+    <link href="https://fonts.googleapis.com/css?family=Lato%3A400%2C100%2C300%2C700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="assets/font-awesome-4.6.3/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="assets/pickadate.js/lib/themes/default.css">
+    <link rel="stylesheet" href="assets/pickadate.js/lib/themes/default.date.css">
+
+    <!-- <link href="lib/ionic/css/ionic.css" rel="stylesheet"> -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
+    <link href="css/ionic.app.css" rel="stylesheet">
+    -->
+
+    <!-- ionic/angularjs js -->
+    <!-- <script src="lib/ionic/js/ionic.bundle.js"></script> -->
+
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <!-- <script src="js/app.js"></script> -->
+  </head>
+  <body>
+    <div b-name="timerContainer" class="clock"><i class="fa clock-icon fa-clock-o"></i></div>
+    <div class="timer default" b-name="timer">
+      <div class="time-remaining"></div>
+    </div>
+    <div id="iOS_header"></div>
+    <div id="view" name="view">
+
+    </div>
+    <nav class="tabs">
+      <div class="ind-tab" page="home"><i class="fa fa-home"></i></div>
+      <div class="ind-tab" page="build"><i class="fa fa-trophy"></i></div>
+      <div class="ind-tab" page="dashboard"><i class="fa fa-home"></i></div>
+    </nav>
+
+  </body>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+  <script src="assets/pickadate.js/lib/picker.js"></script>
+  <script src="assets/pickadate.js/lib/picker.date.js"></script>
+
+  <script src="js/routing.js/dist/routing.js"></script>
+  <script src="js/routing.js/js/transition.js"></script>
+
+  <script src="js/timer.js"></script>
+  <script src="js/iTimer.js"></script>
+
+  <script src="js/main.js"></script>
+  <script src="data/keydata.js"></script>
+</html>

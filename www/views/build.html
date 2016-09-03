@@ -1,0 +1,42 @@
+<div class="build-container">
+  <div class="header">
+    <input type="text" class="title" b-name="workoutTitle" placeholder="Workout Name"></input>
+    <input type="text" b-name="datePicker" class="date-picker" data-value="today();"></input>
+  </div>
+
+  <div class="exercise-container" b-repeat="exercises">
+    <div class="new-exercise"><input b-name="exerciseSearch" type="text" class="exercise" placeholder="Exercise" b-prop="exerciseName"></input></div>
+
+    <div class="set" b-repeat-in="sets">
+      <div class="inline-block set-number" b-prop="set">Set I.</div>
+      <div class="inline-block weight">
+        <input type="text" class="weight-input set-input" placeholder="100" b-text="weight" b-input="setData"></input>
+        <select name="weight-type" class="weight-type">
+          <option>lb</option>
+          <option>kg</option>
+        </select>
+      </div>
+      <div class="inline-block reps">
+        <input type="text" class="rep-input set-input" placeholder="10" b-text="reps" b-input="setData"></input>
+
+        <select name="rep-type" class="rep-type">
+          <option>Reps</option>
+          <option>Mins</option>
+        </select>
+      </div>
+      <div class="plus"  b-click="addSet"><i class="fa fa-plus"></i></div>
+
+    </div>
+  </div>
+  <input type="text" placeholder="New Exercise" class="exercise new-exercise" b-name="addExercise"></input>
+
+  <div class="search-container hidden" b-name="filtered">
+    <div class="search-results" b-name="result" b-repeat="filtered">
+      <div b-prop="name"></div>
+    </div>
+  </div>
+
+
+
+
+</div>
