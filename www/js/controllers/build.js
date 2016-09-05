@@ -57,6 +57,7 @@ var exercise = [
 ];
 
 var findNodebyID = function (nodes, id) {
+  console.log(nodes, id);
   for (var x = 0; x < nodes.length; x++) {
     if (nodes[x].__meta.id === id) return nodes[x];
   }
@@ -95,7 +96,7 @@ route.controller(function ($scope, $data, view) {
 
   var $exercises = $scope.repeat("exercises");
 
-  $exercises.push(exercise, modifySetHTML);
+  $exercises.push(JSON.parse(JSON.stringify(exercise)), modifySetHTML);
 
   $scope.addSet = function (e) {
     var repeatNode = this.parentNode.parentNode,
@@ -130,10 +131,9 @@ route.controller(function ($scope, $data, view) {
     temp[prop] = this.value;
 
     // repeatNode.repeat.sets.modify({dataset: {b_id: id}}, temp);
+    console.log(repeatNode);
     findNodebyID(repeatNode.repeat.sets.get(), id)
       [prop] = this.value;
-
-    console.log(findNodebyID(repeatNode.repeat.sets.get(), id));
   }
 
   var meta = {
@@ -145,7 +145,7 @@ route.controller(function ($scope, $data, view) {
   };
 
   $scope.event.add("addExercise", {
-    input: {
+    focus: {
       addExercise: function () {
         var val = this.value,
             node;
@@ -209,7 +209,7 @@ route.controller(function ($scope, $data, view) {
         sorted = $filtered.get();
 
         sorted.sort(function (a,b) {
-          return (a.name.split(" ").length * a.percentMatch) > (b.name.split(" ").length * b.percentMatch);
+          return (a.name.split(" ").length * a.percentMatch) < (b.name.split(" ").length * b.percentMatch);
         });
 
 
