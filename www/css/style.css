@@ -176,7 +176,10 @@ svg text {
 
   /*background-color: rgba(255,255,255, 0.9);*/
   width: calc(100vw);
-  height: calc(100vh - 49px - 20px);
+              /*  navbar, iOS header, save button  */
+  height: calc(100vh - 49px - 20px - 61px);
+
+  padding-bottom: 1px;
 
   /*padding: 0 20px*/
   overflow-y: scroll;
@@ -215,7 +218,7 @@ svg text {
   /*border-bottom: 3px solid rgba(0, 117, 194, .4);*/
   /*border-radius: 1.5px;*/
   width: calc(100vw - 40px);
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(255,255,255,0.1);
   padding: 10px 20px 10px 20px;
 }
 
@@ -238,7 +241,7 @@ nav.tabs {
   background-color: #E8E8E8;
   color: #b3b3b3;
 
-  box-shadow: 0 -5px 5px -5px #222;
+  /*box-shadow: 0 -5px 5px -5px #222;*/
 }
 
 nav.tabs .ind-tab {
@@ -324,9 +327,26 @@ input.title {
 
   z-index: 10000;
 
-  background-color:#232526;
+  background-color:#e8e8e8;
 }
 
+button.save {
+  position: fixed;
+  bottom: 48px;
+  width: 100vw;
+
+  background: #62c370;
+  color: #fafafa;
+
+  text-transform: uppercase;
+  font-weight: 400;
+  letter-spacing: 2.2px;
+  font-size: 1.1em;
+
+  padding: 20px;
+  border: 0;
+  outline: 0;
+}
 input.exercise {
   width: 100vw;
   padding: 18px 20px;

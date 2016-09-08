@@ -12,6 +12,9 @@ var route = new RouteConfig("#view");
 
 domReady(function () {
 
+  window.DB = new PouchDB('workout-server');
+
+
   //document.body.oncontextmenu = function () {return false;};
 
   document.querySelectorAll(".ind-tab").forEach(function (d) {
@@ -24,6 +27,27 @@ domReady(function () {
   route.config({
     cache: true
   });
+
+  route
+    .add("home", "views/home.html", "js/controllers/home.js")
+    .add("build", "views/build.html", "js/controllers/build.js");
+
+  var transition = new Transition()
+    .addView("home", 0)
+    .addView("build", 1)
+    .transition(800);
+
+  var view = document.getElementById("view");
+
+  var hash = route.hash.get();
+
+  document.body.querySelector("div[page='"+ (hash.view || "home") + "']").classList.add("active");
+
+  STATES = new StateSaver();
+
+  STATES
+    .add("home")
+    .add("build");
 
   (function(){
     document.querySelector(".clock").addEventListener("click", function (e) {
@@ -60,20 +84,7 @@ domReady(function () {
     }
   });
 
-  route
-    .add("home", "views/home.html", "js/controllers/home.js")
-    .add("build", "views/build.html", "js/controllers/build.js");
 
-  var transition = new Transition()
-    .addView("home", 0)
-    .addView("build", 1)
-    .transition(800);
-
-  var view = document.getElementById("view");
-
-  var hash = route.hash.get();
-
-  document.body.querySelector("div[page='"+ (hash.view || "home") + "']").classList.add("active");
 
   if (hash) {
     route.deploy(hash.view);
