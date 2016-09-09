@@ -7,12 +7,6 @@ var isDuplicate = function (data, name) {
   return false;
 };
 
-var emptyRepeat = function (repeat) {
-  for (var x in repeat) {
-    repeat
-  }
-};
-
 // search = ["bench", "press"] <-- Array exploded
 var disjointSearch = function (search, filter) {
   var regex,
@@ -70,22 +64,27 @@ var modifySetHTML = function (repeatNode) {
 };
 
 route.controller(function ($scope, $data, view) {
+  var $filtered = $scope.repeat("filtered"),
+      $exercises = $scope.repeat("exercises");
 
-  var workout = new WorkoutSaver();
+  var workout = new WorkoutSaver(),
+      cache;
 
-  var $filtered = $scope.repeat("filtered");
-
-  window.$exercises = $scope.repeat("exercises");
+  workout.getCache(function (response) {
+    cache = response;
+    cache.forEach(function (exercise) {
+      $filtered.push({name: exercise});
+    });
+  });
 
   if (STATES.apply("build")) {
-    console.log(STATES.apply("build"));
     var state = STATES.apply("build");
   //  $scope = STATES.apply("build", $data);
-  $exercises.push(state.exercises);
- }
- else {
-   $exercises.push(JSON.parse(JSON.stringify(exercise)), modifySetHTML);
- }
+    $exercises.push(state.exercises);
+  }
+  else {
+    $exercises.push(JSON.parse(JSON.stringify(exercise)), modifySetHTML);
+  }
 
   var funcs = {
     appendSearch: function (node, meta) {
@@ -95,7 +94,15 @@ route.controller(function ($scope, $data, view) {
       }
       return node;
     }
-  }
+  };
+
+  var meta = {
+    lastLength: 0,
+    searchPreviousSibling: null,
+    $el: {
+      search: $($scope.filtered.self[0])
+    }
+  };
 
   var $input = $('.date-picker').pickadate({
     format: "mmmm d, yyyy",
@@ -110,6 +117,8 @@ route.controller(function ($scope, $data, view) {
 
   $scope.saveWorkout = function () {
     workout.update().save($input);
+
+    document.body.querySelector("div[page='home']").classList.add("active");
     route.deploy("home");
   };
 
@@ -128,15 +137,41 @@ route.controller(function ($scope, $data, view) {
     repeatNode.repeat.sets
       .modify(i, {set: "Set " + (romanNumerals[i+1] || i+1)});
 
-
-    console.log($exercises.get());
     STATES.set("build", {"exercises": $exercises.get()});
-
-
 
     $(this).animate({
       bottom: "-=48px",
     }, 250).fadeOut(300);
+  };
+
+  $scope.deleteSet = function () {
+    var set = this.parentNode,
+        repeatNode = set.parentNode,
+        _id = set.getAttribute("data-b_id"),
+        length = repeatNode.repeat.sets.get().length;
+
+
+    var isLast = set.querySelector(".plus").style.display !== "none";
+
+    if (length > 1) {
+      repeatNode.repeat.sets.filter(function (o) {
+        return o.__meta.id !== _id;
+      });
+
+      repeatNode.repeat.sets.modifyEach(function (o,i) {
+        o.set = "Set " + romanNumerals[i+1] || i+1;
+      });
+      if (isLast) {
+        var lastNode = repeatNode.querySelectorAll(".set")[length-2];
+        $(lastNode.querySelector(".plus"))
+          .css("display","")
+          .animate({"bottom":"+=48px"}, 100);
+      }
+    }
+    else {
+      alert("You cannot delete this set");
+    }
+
   };
 
   $scope.setData = function (e) {
@@ -155,14 +190,6 @@ route.controller(function ($scope, $data, view) {
 
     node[prop] = this.value;
 
-  }
-
-  var meta = {
-    lastLength: 0,
-    searchPreviousSibling: null,
-    $el: {
-      search: $($scope.filtered.self[0])
-    }
   };
 
   $scope.event.add("addExercise", {
@@ -179,22 +206,23 @@ route.controller(function ($scope, $data, view) {
 
         funcs.appendSearch(node, meta).value = val;
 
-        STATES.set("build", {"exercises": $exercises.get()});
+        // STATES.set("build", {"exercises": $exercises.get()});
 
         node.focus();
-        // meta.$el.search.removeClass("hidden").slideDown();
+
+        $filtered.filter(function (o) {
+          return 0;
+        });
+
+        cache.forEach(function (o) {
+          $filtered.push({
+            name: o,
+          });
+        });
+
       }
     }
   });
-
-  keys.forEach(function (o) {
-    $filtered.push({
-      name: o,
-      // obj: o[Object.keys(o)]
-    });
-  });
-
-  console.log($filtered.get());
 
   var filtered = [];
   $scope.event.add("exerciseSearch", {
@@ -203,7 +231,6 @@ route.controller(function ($scope, $data, view) {
 
         var val = this.value,
             sorted = [];
-
         if ( val.length < 3 ) {
           $scope.filtered.self[0].classList.add("hidden");
         }
@@ -212,7 +239,7 @@ route.controller(function ($scope, $data, view) {
           $scope.filtered.self[0].classList.remove("hidden");
 
           if (this.value.length < meta.lastLength) {
-            keys.forEach(function (o) {
+            cache.forEach(function (o) {
               var key = o;
               if ( (disjointSearch((val).split(" "), key) > 50) && !isDuplicate($filtered.get(), key) ) {
                 $filtered.push({
@@ -271,6 +298,25 @@ route.controller(function ($scope, $data, view) {
 
 var WorkoutSaver = (function () {
 
+  var funcs = {
+    setCache: function ( args ) {
+      var temp = {
+        _id: args._id,
+        exercise_cache: args.data
+      };
+
+      args.database.get(args._id).then(function (doc){
+        temp._rev = doc._rev;
+        return args.database.put(temp);
+      }).then(function (response) {
+        console.log(response);
+      }).catch(function (err) {
+        console.log("No cache, creating...");
+        args.database.put(temp);
+      });
+    }
+
+  };
 
   var init = function () {
     data.workout = {
@@ -278,7 +324,6 @@ var WorkoutSaver = (function () {
       exerciseList: []
     };
     DB.info().then(function (info) {
-      console.log(info);
       meta.count = info.doc_count;
     });
   };
@@ -291,6 +336,9 @@ var WorkoutSaver = (function () {
   return {
     update: function () {
       var exercise, sets, setNodes;
+
+      data.workout.date = document.body.querySelector(".date-picker").value;
+
       document.body.querySelectorAll('.exercise-container[data-b_id]').forEach(function (o) {
         exercise = o.querySelector("input.exercise").value;
         sets = o.repeat.sets.get();
@@ -311,11 +359,35 @@ var WorkoutSaver = (function () {
     save: function (date) {
       data.workout._id = "workout_" + meta.count;
       meta.count ++;
-      console.log(data.workout);
 
       DB.put(data.workout);
 
+      data.workout.exerciseList.forEach(function (o) {
+        if (data.exercise_cache.indexOf(o.exercise) === -1) {
+          data.exercise_cache.push(o.exercise);
+        }
+      });
+
+      funcs.setCache({
+        database: DB,
+        _id: "exercise_cache",
+        data: data.exercise_cache
+      });
+
+      return this;
+    },
+    getCache: function (callback) {
+      if (!data.exercise_cache || data.exercise_cache.length === 0) {
+        DB.get("exercise_cache").then(function (doc) {
+          data.exercise_cache = doc.exercise_cache;
+          callback(doc.exercise_cache);
+        })
+        .catch(function (err) {
+          data.exercise_cache = [];
+          callback([]);
+        });
+      }
       return this;
     }
-  }
+  };
 });

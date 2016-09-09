@@ -1,7 +1,7 @@
 var domReady = function(callback) {
-    document.readyState === "interactive" || document.readyState === "complete"
-      ? callback()
-      : document.addEventListener("DOMContentLoaded", callback);
+    document.readyState === "interactive" || document.readyState === "complete"?
+      callback() :
+      document.addEventListener("DOMContentLoaded", callback);
 };
 
 var today = function () {
@@ -11,11 +11,7 @@ var today = function () {
 var route = new RouteConfig("#view");
 
 domReady(function () {
-
   window.DB = new PouchDB('workout-server');
-
-
-  //document.body.oncontextmenu = function () {return false;};
 
   document.querySelectorAll(".ind-tab").forEach(function (d) {
     d.addEventListener("click", function () {
@@ -83,8 +79,6 @@ domReady(function () {
       }
     }
   });
-
-
 
   if (hash) {
     route.deploy(hash.view);
