@@ -1,1 +1,29 @@
-<!-- <h1 class="title">Name</h1> -->
+<div class="home-container">
+  <button class="start-button" type="button" b-click="toBuild">Start Workout</button>
+  <div class="recent-header">Workout Log</div>
+  <div class="workouts-container">
+    <div class="workout" b-repeat="workouts">
+      <div class="workout-header" b-click="showExercises">
+        <div class="workout-name" b-prop="name">&nbsp;</div>
+        <div class="workout-date" b-prop="date"></div>
+        <i class="fa fa-caret-down caret-down"></i>
+      </div>
+      <div class="exercises-container">
+        <div class="exercise-container" b-repeat-in="exerciseList">
+          <div class="exercise-name" b-prop="exercise"></div>
+          <div class="sets-container">
+            <table><tbody><tr>
+                <td class="set-container" b-repeat-in="sets">
+                    <div class="weight set-col" b-prop="weight"></div>
+                    <div class="weight-type set-col" b-prop="weightType"></div>
+                    <span class="times">x</span>
+                    <div class="reps set-col" b-prop="reps"></div>
+                    <div class="rep-type set-col" b-prop="repType"></div>
+                </td>
+            </tr></tbody></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

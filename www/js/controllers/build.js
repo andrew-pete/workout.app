@@ -1,5 +1,5 @@
 var isDuplicate = function (data, name) {
-  for (var x=0; x < data.length; x++) {
+  for (var x = 0; x < data.length; x++) {
     if (data[x].name === name) {
       return true;
     }
@@ -89,6 +89,7 @@ route.controller(function ($scope, $data, view) {
   var funcs = {
     appendSearch: function (node, meta) {
       if ( !meta.searchPreviousSibling || $scope.filtered.self[0].previousSibling !== node) {
+        console.log(node.parentNode);
         node.parentNode.appendChild($scope.filtered.self[0]);
         meta.searchPreviousSibling = node;
       }
@@ -115,11 +116,22 @@ route.controller(function ($scope, $data, view) {
     }
   });
 
-  $scope.saveWorkout = function () {
-    workout.update().save($input);
+  $scope.addSelected = function () {
+    console.log(this);
+    $(this).toggleClass("selected");
+  };
 
-    document.body.querySelector("div[page='home']").classList.add("active");
-    route.deploy("home");
+  $scope.saveWorkout = function () {
+    var confirm = window.confirm("Are you sure you want to save?");
+
+    if (confirm) {
+      workout.update().save($input);
+
+      document.body.querySelector("div[page='home']").classList.add("active");
+      document.body.querySelector("div[page='build']").classList.remove("active");
+
+      route.deploy("home");
+    }
   };
 
   $scope.addSet = function (e) {
@@ -142,6 +154,19 @@ route.controller(function ($scope, $data, view) {
     $(this).animate({
       bottom: "-=48px",
     }, 250).fadeOut(300);
+  };
+
+
+/* not functional... in exercise appending, it replicates __meta.id */
+
+  $scope.deleteExercise = function () {
+    var repeat = this.parentNode.parentNode,
+        _id = repeat.getAttribute("data-b_id");
+
+    $exercises.filter(function (o) {
+      console.log(o.__meta.id);
+      return o.__meta.id !== _id;
+    });
   };
 
   $scope.deleteSet = function () {
@@ -174,6 +199,10 @@ route.controller(function ($scope, $data, view) {
 
   };
 
+  $scope.showSelector = function () {
+    $(this.nextElementSibling).fadeToggle(200);
+  };
+
   $scope.setData = function (e) {
     var repeatedInNode = this.parentNode.parentNode,
         repeatNode = repeatedInNode.parentNode;
@@ -199,10 +228,13 @@ route.controller(function ($scope, $data, view) {
             node;
         this.value = "";
 
-        $exercises.push(exercise, function (o) {
+        $exercises.push(JSON.parse(JSON.stringify(exercise)), function (o) {
           modifySetHTML(o);
           node = o.querySelector("input.exercise");
         });
+
+        // window.newnode = node;
+        var top = node.getBoundingClientRect().top + window.scrollY;
 
         funcs.appendSearch(node, meta).value = val;
 
@@ -288,7 +320,7 @@ route.controller(function ($scope, $data, view) {
   $scope.event.add("result", {
     click: {
       chooseExercise: function (e) {
-        this.parentNode.previousSibling.value = this.innerText;
+        this.parentNode.parentNode.querySelector("input.exercise").value = this.innerText;
       }
     }
   });
@@ -337,7 +369,12 @@ var WorkoutSaver = (function () {
     update: function () {
       var exercise, sets, setNodes;
 
+      data.workout.name = document.body.querySelector(".title").value.trim();
       data.workout.date = document.body.querySelector(".date-picker").value;
+      data.workout.muscle_groups = [];
+      document.body.querySelectorAll("td.selected").forEach(function (node) {
+        data.workout.muscle_groups.push(node.innerText);
+      });
 
       document.body.querySelectorAll('.exercise-container[data-b_id]').forEach(function (o) {
         exercise = o.querySelector("input.exercise").value;
@@ -363,9 +400,19 @@ var WorkoutSaver = (function () {
       DB.put(data.workout);
 
       data.workout.exerciseList.forEach(function (o) {
-        if (data.exercise_cache.indexOf(o.exercise) === -1) {
-          data.exercise_cache.push(o.exercise);
+        var flag_match = false,
+            regex;
+
+        for (var x = 0; x < data.exercise_cache.length; x++) {
+          regex = new RegExp(o.exercise,"ig");
+          if (data.exercise_cache[x].match(regex)) {
+            flag_match = true;
+            break;
+          }
         }
+
+        if (!flag_match) data.exercise_cache.push(o.exercise);
+
       });
 
       funcs.setCache({

@@ -1,13 +1,17 @@
 var domReady = function(callback) {
-    document.readyState === "interactive" || document.readyState === "complete"?
-      callback() :
+    if (document.readyState === "interactive" || document.readyState === "complete") {
+      callback();
+    }
+    else {
       document.addEventListener("DOMContentLoaded", callback);
+    }
 };
 
 var today = function () {
   var d = new Date();
   return d.format("yyyy-mm-dd");
 };
+
 var route = new RouteConfig("#view");
 
 domReady(function () {
@@ -47,10 +51,13 @@ domReady(function () {
 
   (function(){
     document.querySelector(".clock").addEventListener("click", function (e) {
-      var $timer = $(".timer");
+      var view = route.hash.get().view;
 
+      var $timer = $(".timer");
       var hidden = $timer.hasClass("hide");
-      $(".build-container").toggleClass("darken");
+
+      $("." + view + "-container").toggleClass("darken");
+
       $timer.fadeToggle(200);
     });
 

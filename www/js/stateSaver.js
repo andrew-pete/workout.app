@@ -32,8 +32,8 @@ var StateSaver = (function () {
     // Grabs old data previously save in local storage. If no data, return null
     apply: function (state, data) {
       if (Object.keys(states[state]).length === 0) return null;
-      
+
       return states[state];
     }
-  }
+  };
 });

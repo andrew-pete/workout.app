@@ -1,11 +1,39 @@
 <div class="build-container">
   <div class="header">
     <input type="text" class="title" b-name="workoutTitle" placeholder="Workout Name"></input>
-    <input type="text" b-name="datePicker" class="date-picker" data-value="today();"></input>
+    <div class="bottom-row">
+      <input type="text" b-name="datePicker" class="date-picker" data-value="today();"></input>
+      <div class="muscle-group-select" b-click="showSelector">
+        Muscle Groups
+      </div>
+      <div class="muscle-group-selector">
+        <table>
+          <tr>
+            <td b-click="addSelected">Chest</td>
+            <td b-click="addSelected">Back</td>
+          </tr>
+          <tr>
+            <td b-click="addSelected">Biceps</td>
+            <td b-click="addSelected">Triceps</td>
+          </tr>
+          <tr>
+            <td b-click="addSelected">Legs</td>
+            <td b-click="addSelected">Abs</td>
+          </tr>
+          <tr>
+            <td b-click="addSelected">Shoulders</td>
+            <td b-click="addSelected">Other</td>
+          </tr>
+        </table>
+      </div>
+    </div>
   </div>
 
   <div class="exercise-container" b-repeat="exercises">
-    <div class="new-exercise"><input b-name="exerciseSearch" type="text" class="exercise" placeholder="Exercise" b-prop="exerciseName"></input></div>
+    <div class="new-exercise">
+      <input b-name="exerciseSearch" type="text" class="exercise" placeholder="Exercise" b-prop="exerciseName"></input>
+      <div class="minus" b-click="deleteExercise"> <i class="fa fa-trash-o"></i></div>
+    </div>
 
     <div class="set" b-repeat-in="sets">
       <div class="inline-block set-number" b-prop="set">Set I.</div>

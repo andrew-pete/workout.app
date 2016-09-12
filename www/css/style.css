@@ -84,7 +84,7 @@ body {
   background: rgba(0,0,0, 0.05);
 }
 
-.home-namespace::before {
+/*.home-namespace::before {
   content: '';
   position: absolute;
 
@@ -113,9 +113,9 @@ body {
   width: 600px;
 
   transform: rotate(-25deg);
-}
+}*/
 
-#view.build-namespace {
+#view.build-namespace, #view.home-namespace {
   background: #232526; /* fallback for old browsers */
   background: -webkit-linear-gradient(to left, #232526 , #414345); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to left, #232526 , #414345); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
@@ -142,7 +142,7 @@ h1.title {
 }
 
 .home-namespace h1.title {
-  margin-top: 35vh;
+  margin-top: 12vh;
   text-align: center;
 
   color: rgba(74, 218, 255, 0.8);
@@ -173,13 +173,27 @@ svg text {
 
 /* BUILD CSS */
 
-.build-container {
+.build-container, .home-container {
   position: relative;
 
   /*background-color: rgba(255,255,255, 0.9);*/
   width: calc(100vw);
               /*  navbar, iOS header, save button  */
   height: calc(100vh - 49px - 20px - 61px);
+
+  padding-bottom: 1px;
+
+  /*padding: 0 20px*/
+  overflow-y: scroll;
+}
+
+.home-container {
+  position: relative;
+
+  /*background-color: rgba(255,255,255, 0.9);*/
+  width: calc(100vw);
+              /*  navbar, iOS header, save button  */
+  height: calc(100vh - 49px - 20px);
 
   padding-bottom: 1px;
 
@@ -290,6 +304,8 @@ input {
 
 input.date-picker {
   position:relative;
+  display: inline-block;
+
   width: 136px;
   font-size: 0.8rem;
 
@@ -301,6 +317,76 @@ input.date-picker {
   border-radius: 3px;
 
   transition: all 0.3s ease-out;
+}
+
+.bottom-row {
+  position: relative;
+}
+
+.muscle-group-select {
+  position: absolute;
+
+  right: -6px;
+  bottom: 5px;
+  padding: 4px 6px;
+
+  font-size: 0.85em;
+
+  color: #0074ac;
+  border-radius: 2px;
+
+  background: rgba(255, 255, 255, 0.9);
+  /*float: right;*/
+}
+
+.muscle-group-selector::before {
+  content: '\25B2';
+  /*display: none;*/
+  color: #fafafa;
+  z-index: 12;
+
+  font-size: 1.6em;
+
+  position: absolute;
+  top: -20px;
+  right: 28px;
+}
+
+.muscle-group-selector {
+  display: none;
+  position: absolute;
+  border-radius: 4px;
+
+  color: #444;
+
+  top:50px;
+  right: 0px;
+
+  width: 140px;
+  background-color: #fafafa;
+  z-index: 12;
+
+  padding: 4px 6px;
+}
+
+
+
+.muscle-group-selector table {
+  width: 100%;
+  font-weight: 300;
+}
+
+.muscle-group-selector td {
+  transition: all 0.2s linear;
+
+  text-align: center;
+  padding: 4px 4px;
+}
+
+.muscle-group-selector td.selected {
+  transition: all 0.2s linear;
+  color: #45a052;
+  /*font-weight: 400;*/
 }
 
 .picker--opened .picker__frame {
@@ -350,8 +436,8 @@ button.save {
   outline: 0;
 }
 input.exercise {
-  width: 100vw;
-  padding: 18px 20px;
+  width: calc(100vw - 65px);
+  padding: 18px 45px 18px 20px;
 
   background: rgba(148, 208, 255, 0.3);
 
@@ -371,7 +457,6 @@ input.new-exercise {
 
 .new-exercise {
   position: relative;
-  box-shadow:
 }
 
 .exercise::-webkit-input-placeholder {
@@ -402,6 +487,21 @@ input.new-exercise {
   color: #f17070;
 
   z-index: 10;
+}
+
+.new-exercise .minus {
+  position: absolute;
+  top: 15px;
+  right: 8px;
+
+  padding: 5px 15px 5px 2px;
+
+  font-size: 1.4em;
+
+  color: #b3b3b3;
+
+  z-index: 10;
+
 }
 
 .set .plus {
@@ -473,7 +573,7 @@ select.rep-type {
 }
 
 
-.reps {
+.build-namespace .reps {
   float: right;
 }
 
@@ -489,4 +589,168 @@ nav.tabs .ind-tab.active {
   color: #0074c2;
   font-weight: 400;
   text-transform: uppercase;
+}
+
+/* HOME CSS */
+
+.workout .workout-header {
+  width: calc(100vw - 12px);
+  padding: 10px 6px;
+
+  background-color: rgba(255,255,255, 0.02);
+
+  color: rgba(255,255,255, 0.8);
+  border-bottom: 0;
+}
+
+.workout~.workout > .workout-header{
+  width: calc(100vw - 12px);
+  padding: 10px 6px;
+
+  background-color: rgba(255,255,255, 0.02);
+
+  color: rgba(255,255,255, 0.8);
+  border-top: 1px solid rgba(255,255,255, 0.3);
+}
+
+.exercise-name {
+  text-transform: capitalize;
+  letter-spacing: 1.0px;
+
+  color: #0074ac;
+
+  padding: 6px 0px;
+}
+
+.home-namespace .exercises-container {
+    display: none;
+
+    background: #bac5ce; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to left, #bac5ce , #eef2f3); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #bac5ce , #eef2f3); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    color: #444;
+
+    padding: 6px 8px;
+}
+
+.sets-container {
+  font-size: 0.8em;
+  font-weight: 300;
+
+  padding-bottom: 6px;
+
+  overflow-x: scroll;
+
+}
+
+.set-container {
+  /*display: inline-block;*/
+  /*display: none;*/
+  padding: 0 8px;
+  border-right: 1px dashed #444;
+}
+
+.set-col {
+  display: inline-block;
+}
+
+.sets-container td:last-of-type {
+  border: 0;
+}
+
+.sets-container .times {
+  margin: 0 3px;
+  font-weight: 700;
+
+  color: #0074ac;
+
+}
+
+.weight, .home-namespace .reps {
+  font-weight: 400;
+  /*color: #0074ac;*/
+}
+
+.workout-name {
+  padding-left: 2px;
+  display: inline-block;
+  position: relative;
+
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+
+  width: 45%;
+}
+.workout-date {
+  position: relative;
+
+  font-weight: 300;
+  font-size: 0.9em;
+  display: inline-block;;
+  text-align: right;
+  /*float: right;*/
+  width: 45%;
+}
+
+button.start-button {
+  display: table;
+  margin: 16vh auto 40px auto;
+  padding: 20px 10px;
+
+  width: 80vw;
+
+  background: #62c370;
+  color: #fafafa;
+
+  font-size: 1.3em;
+  text-transform: uppercase;
+  font-weight: 300;
+  letter-spacing: 1.3px;
+
+  border-radius: 12px;
+  border: 0;
+  outline: 0;
+}
+
+button.start-button:hover{
+  -webkit-filter: brightness(85%);
+  filter: brightness(85%);
+}
+
+.recent-header {
+  width: 100vw;
+  padding: 14px 0;
+
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+
+  text-align: center;
+  color: rgba(255,255,255, 0.75);
+  background: rgba(148, 208, 255, 0.3);
+
+  font-size: 1.3em;
+}
+
+.caret-down {
+  position: absolute;
+  height: 17px;
+  margin-top: 3px;
+  right: 10px;
+
+  font-size: 1.1em;
+
+  transition: .2s linear;
+}
+
+.caret-down.animate {
+  transition        : .2s linear;
+  color: rgba(148, 208, 255, 0.6);
+
+    /**
+     * Not that ugly as the JavaScript approach.
+     * Easy to maintain, the most portable solution.
+     */
+  -webkit-transform : rotate(90deg);
+  transform: rotate(90deg);
 }
