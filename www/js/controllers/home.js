@@ -1,15 +1,14 @@
 
 route.controller(function ($scope, $data, view) {
-  window.$scope = $scope;
-
   var $workouts = $scope.repeat("workouts");
 
   DB.allDocs({
     include_docs: true
   }).then(function (results) {
+    console.log(results);
     $data.workouts = results.rows;
-
     $data.workouts.forEach(function (o) {
+
       if (o.id.match(/workout/ig)) {
         $workouts.push(o.doc, function (workout) {
           workout.querySelectorAll(".set-container").forEach(function (set){
@@ -24,6 +23,10 @@ route.controller(function ($scope, $data, view) {
           });
         });
       }
+      else if (o.id == "settings") {
+        $data.settings = o.doc.settings;
+      }
+
     });
 
   });
@@ -45,6 +48,7 @@ route.controller(function ($scope, $data, view) {
 
   $scope.toBuild = function () {
     route.deploy("build");
+    $data.transfer("settings", "build");
     document.body.querySelector("div[page='home']").classList.remove("active");
     document.body.querySelector("div[page='build']").classList.add("active");
   };

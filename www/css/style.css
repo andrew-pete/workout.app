@@ -352,10 +352,8 @@ input.date-picker {
 
   font-size: 0.85em;
 
-  color: #0074ac;
+  color: #62c370;
   border-radius: 2px;
-
-  background: rgba(255, 255, 255, 0.9);
   /*float: right;*/
 }
 
@@ -393,7 +391,7 @@ input.date-picker {
 
 .muscle-group-selector table {
   width: 100%;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .muscle-group-selector td {

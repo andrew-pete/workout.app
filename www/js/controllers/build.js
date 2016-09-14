@@ -64,6 +64,17 @@ var modifySetHTML = function (repeatNode) {
 };
 
 route.controller(function ($scope, $data, view) {
+  $data.apply();
+  if (!$data.settings) {
+    DB.get("settings").then(function(doc){
+      $data.settings = doc.settings;
+      $data.save();
+    });
+  }
+  else {
+    console.log($data.settings);
+  }
+
   var $filtered = $scope.repeat("filtered"),
       $exercises = $scope.repeat("exercises");
 
@@ -79,7 +90,7 @@ route.controller(function ($scope, $data, view) {
 
 
   $exercises.push(JSON.parse(JSON.stringify(exercise)), modifySetHTML);
-  
+
 
   var funcs = {
     appendSearch: function (node, meta) {
@@ -144,7 +155,6 @@ route.controller(function ($scope, $data, view) {
     repeatNode.repeat.sets
       .modify(i, {set: "Set " + (romanNumerals[i+1] || i+1)});
 
-    STATES.set("build", {"exercises": $exercises.get()});
 
     $(this).animate({
       bottom: "-=48px",
