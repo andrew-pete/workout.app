@@ -47,10 +47,11 @@ route.controller(function ($scope, $data, view) {
   };
 
   $scope.toBuild = function () {
+    document.body.querySelector('div[page="home"]').classList.remove("active");
+    document.body.querySelector('div[page="build"]').classList.add("active");
     route.deploy("build");
     $data.transfer("settings", "build");
-    document.body.querySelector("div[page='home']").classList.remove("active");
-    document.body.querySelector("div[page='build']").classList.add("active");
+
   };
 
 });
