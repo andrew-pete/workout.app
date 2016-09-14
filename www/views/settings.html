@@ -1,0 +1,38 @@
+<div class="settings-container">
+  <div class="settings-header">
+    <i class="fa fa-chevron-left back-button" b-click="goBack"></i>
+    <div class="settings-header-text">Settings</div>
+  </div>
+  <div class="settings-body">
+    <div class="setting-group">
+      <div class="setting">
+        <table>
+          <tr>
+            <td><i class="fa fa-calculator"></i></td>
+            <td>System of Measurement</td>
+            <td>
+              <select b-name="systemSelect" dir="rtl">
+                <option>Imperial</option>
+                <option>Metric</option>
+              </select>
+              <i class="down-select fa fa-chevron-down"></i>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="setting-group">
+      <div class="setting">
+        <table>
+          <tr>
+            <td><i class="fa fa-clock-o"></i></td>
+            <td>Default Timer</td>
+            <td>
+              <input type="text" placeholder="30" b-input="setTime" b-name="timeInput"></input><span class="seconds">&nbsp;s</span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

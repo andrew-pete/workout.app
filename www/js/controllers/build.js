@@ -77,14 +77,9 @@ route.controller(function ($scope, $data, view) {
     });
   });
 
-  if (STATES.apply("build")) {
-    var state = STATES.apply("build");
-  //  $scope = STATES.apply("build", $data);
-    $exercises.push(state.exercises);
-  }
-  else {
-    $exercises.push(JSON.parse(JSON.stringify(exercise)), modifySetHTML);
-  }
+
+  $exercises.push(JSON.parse(JSON.stringify(exercise)), modifySetHTML);
+  
 
   var funcs = {
     appendSearch: function (node, meta) {

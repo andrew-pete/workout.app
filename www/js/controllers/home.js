@@ -1,7 +1,7 @@
 
 route.controller(function ($scope, $data, view) {
   window.$scope = $scope;
-  
+
   var $workouts = $scope.repeat("workouts");
 
   DB.allDocs({
@@ -37,6 +37,10 @@ route.controller(function ($scope, $data, view) {
       $(this.nextElementSibling).slideUp();
       this.querySelector(".caret-down").classList.remove("animate");
     }
+  };
+
+  $scope.toSettings = function () {
+    route.deploy("settings");
   };
 
   $scope.toBuild = function () {

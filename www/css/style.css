@@ -221,7 +221,27 @@ svg text {
   border: 2px solid rgba(0,0,0,0.2);
 }
 
-.clock-icon {
+.settings {
+  position: absolute;
+
+  z-index: 100;
+
+  width: 41px;
+  height: 41px;
+
+  left: 10px;
+  top: calc(40px - 20px);
+
+  font-size: 1.8em;
+
+  color: #666;
+  background-color: #f1f1f1;
+
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.2);
+}
+
+.clock-icon, .settings-icon {
   opacity: 0.75;
 
   margin-top: 7px;
@@ -622,7 +642,7 @@ nav.tabs .ind-tab.active {
   padding: 6px 0px;
 }
 
-.home-namespace .exercises-container {
+.home-container .exercises-container {
     display: none;
 
     background: #bac5ce; /* fallback for old browsers */
@@ -753,4 +773,92 @@ button.start-button:hover{
      */
   -webkit-transform : rotate(90deg);
   transform: rotate(90deg);
+}
+
+/* SETTINGS CSS */
+
+.settings-container {
+  height: calc(100vh - 20px - 47px);
+  width: 100vw;
+  background:#dfdfdf;
+
+  color: #444;
+}
+
+.settings-header {
+  font-size: 1.4em;
+  background: #f2f2f2;
+
+  padding: 30px 12px 16px 12px;
+  width: calc(100vw - 24px);
+  border-bottom: 1px solid #d3d3d3;
+}
+
+.back-button {
+  z-index: 15;
+}
+
+.settings-header .settings-header-text {
+  position: absolute;
+  z-index: 0;
+
+  text-transform: uppercase;
+  font-weight: 300;
+
+  top: 50px;
+  left: 60px;
+  right: 60px;
+  text-align: center;
+}
+
+.settings-body {
+    font-size: 0.9em;
+}
+
+.setting-group {
+  margin: 20px 0;
+}
+
+.setting {
+  width: calc(100vw - 16px);
+  padding: 10px 8px;
+  background: #f2f2f2;
+}
+
+.setting-group table {
+  width: 100%;
+}
+
+.setting-group td:nth-of-type(3) {
+  text-align: right;
+}
+
+.setting-group td:nth-of-type(3) input {
+  text-align: right;
+  padding: 0;
+  color: #777;
+}
+
+.setting-group td:nth-of-type(1){
+  width: 30px;
+}
+
+.setting .seconds {
+  color: #c8c8c8;
+}
+
+.setting~.setting {
+  border-top: 1px solid #d3d3d3;
+}
+
+.settings-container td .fa-calculator {
+  color: #5ca9ce;
+}
+.settings-container td .fa-clock-o {
+  color: #ec9e35;
+}
+
+.setting .down-select {
+  font-size: 0.9em;
+  opacity: 0.5;
 }
