@@ -128,10 +128,7 @@ route.controller(function ($scope, $data, view) {
     }
   });
 
-  $scope.addSelected = function () {
-    console.log(this);
-    $(this).toggleClass("selected");
-  };
+
 
   $scope.saveWorkout = function () {
     var confirm = window.confirm("Are you sure you want to save?");
@@ -217,7 +214,20 @@ route.controller(function ($scope, $data, view) {
   };
 
   $scope.showSelector = function () {
+    $(this).toggleClass("open");
     $(this.nextElementSibling).fadeToggle(200);
+  };
+
+  $scope.addSelected = function () {
+    $(this).toggleClass("selected");
+    var table = this.parentNode.parentNode.parentNode;
+    // Highlight the selector green if user has more than 0 muscle groups selected
+    if (table.querySelectorAll(".selected").length > 0) {
+      $(table.parentNode.previousElementSibling).addClass("selected");
+    }
+    else {
+      $(table.parentNode.previousElementSibling).removeClass("selected");
+    }
   };
 
   $scope.setData = function (e) {

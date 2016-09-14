@@ -352,10 +352,21 @@ input.date-picker {
 
   font-size: 0.85em;
 
-  color: #62c370;
   border-radius: 2px;
+  color: #ff7d7d;
+  transition: all 0.2s;
   /*float: right;*/
 }
+
+.muscle-group-select.selected {
+  color: #62c370;
+}
+
+.muscle-group-select.open {
+  color: #fafafa;
+}
+
+
 
 .muscle-group-selector::before {
   content: '\25B2';
