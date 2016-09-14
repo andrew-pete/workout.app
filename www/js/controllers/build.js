@@ -57,7 +57,10 @@ var findNodebyID = function (nodes, id) {
   return null;
 };
 
-var modifySetHTML = function (repeatNode) {
+var modifySetHTML = function (repeatNode, settings) {
+  if (settings && settings.system === "Metric") {
+    repeatNode.querySelector('option[name="kg"]').setAttribute("selected","selected");
+  }
   repeatNode.repeat.sets.modifyEach(function (prop, i) {
     prop.set = "Set " + (romanNumerals[i+1] || i+1);
   });
@@ -69,6 +72,9 @@ route.controller(function ($scope, $data, view) {
     DB.get("settings").then(function(doc){
       $data.settings = doc.settings;
       $data.save();
+      if ($data.settings.system === "Metric") {
+        document.body.querySelector('option[name="kg"]').setAttribute("selected","selected");
+      }
     });
   }
   else {
@@ -144,12 +150,18 @@ route.controller(function ($scope, $data, view) {
     var repeatNode = this.parentNode.parentNode,
         i = repeatNode.querySelectorAll(".set").length;
 
-    var lastNode = repeatNode.repeat.sets.get()[i-1];
+    var lastRepeat = repeatNode.repeat.sets.get()[i-1],
+        lastNode = repeatNode.querySelectorAll(".set")[i-1],
+        lastWeightType = lastNode.querySelector('select[name="weight-type"]').value,
+        lastRepType = lastNode.querySelector('select[name="rep-type"]').value;
 
     repeatNode.repeat.sets
-      .push({weight: lastNode.weight, reps: lastNode.reps}, function (o) {
-        o.querySelector(".weight-input").value = lastNode.weight;
-        o.querySelector(".rep-input").value = lastNode.reps;
+      .push({weight: lastRepeat.weight, reps: lastRepeat.reps}, function (o) {
+        o.querySelector('option[name="' +lastWeightType+ '"]').setAttribute("selected","selected");
+        o.querySelector('option[name="' +lastRepType+ '"]').setAttribute("selected","selected");
+
+        o.querySelector(".weight-input").value = lastRepeat.weight;
+        o.querySelector(".rep-input").value = lastRepeat.reps;
       });
 
     repeatNode.repeat.sets
@@ -234,7 +246,7 @@ route.controller(function ($scope, $data, view) {
         this.value = "";
 
         $exercises.push(JSON.parse(JSON.stringify(exercise)), function (o) {
-          modifySetHTML(o);
+          modifySetHTML(o, $data.settings);
           node = o.querySelector("input.exercise");
         });
 

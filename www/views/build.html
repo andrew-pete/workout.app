@@ -40,17 +40,17 @@
       <div class="inline-block weight">
         <input type="text" class="weight-input set-input" placeholder="100" b-text="weight" b-input="setData"></input>
         <select name="weight-type" class="weight-type">
-          <option>lb</option>
-          <option>kg</option>
-          <option></option>
+          <option name="lb">lb</option>
+          <option name="kg">kg</option>
+          <option name="lvl">lvl</option>
         </select>
       </div>
       <div class="inline-block reps">
         <input type="text" class="rep-input set-input" placeholder="10" b-text="reps" b-input="setData"></input>
 
         <select name="rep-type" class="rep-type">
-          <option>Reps</option>
-          <option>Mins</option>
+          <option name="Reps">Reps</option>
+          <option name="Mins">Mins</option>
         </select>
       </div>
       <div class="minus" b-click="deleteSet"> <i class="fa fa-minus"></i></div>
