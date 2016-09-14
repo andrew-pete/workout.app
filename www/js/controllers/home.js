@@ -6,7 +6,7 @@ route.controller(function ($scope, $data, view) {
     include_docs: true
   }).then(function (results) {
     console.log(results);
-    $data.workouts = results.rows;
+    $data.workouts = results.rows.reverse();
     $data.workouts.forEach(function (o) {
 
       if (o.id.match(/workout/ig)) {

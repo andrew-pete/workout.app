@@ -661,6 +661,9 @@ nav.tabs .ind-tab.active {
     color: #444;
 
     padding: 6px 8px;
+
+    max-height: 33vh;
+    overflow: scroll;
 }
 
 .sets-container {
@@ -669,8 +672,14 @@ nav.tabs .ind-tab.active {
 
   padding-bottom: 6px;
 
+  width: 100%;
   overflow-x: scroll;
+  white-space: nowrap;
 
+}
+
+.exercises-container table {
+  overflow-x: scroll;
 }
 
 .set-container {
@@ -696,7 +705,7 @@ nav.tabs .ind-tab.active {
 
 }
 
-.weight, .home-namespace .reps {
+.weight, .home-container .reps {
   font-weight: 400;
   /*color: #0074ac;*/
 }
