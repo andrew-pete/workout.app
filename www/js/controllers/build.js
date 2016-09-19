@@ -7,6 +7,15 @@ var isDuplicate = function (data, name) {
   return false;
 };
 
+var createID = function (bytes) {
+  var array = [],
+      possible = "0123456789ABCDEF";
+  for (var x = 0; x < (bytes || 16); x++) {
+    array.push(possible.charAt(16*Math.random()));
+  }
+  return array.join("");
+};
+
 // search = ["bench", "press"] <-- Array exploded
 var disjointSearch = function (search, filter) {
   var regex,
@@ -66,8 +75,53 @@ var modifySetHTML = function (repeatNode, settings) {
   });
 };
 
+var loadState = function (data, repeat) {
+  var selector = document.body.querySelector(".muscle-group-selector");
+
+  // Set Workout Name
+  document.body.querySelector("input.title").value = data.name;
+
+  // Change selector color to green if there are some already selected
+  if (data.muscle_groups.length > 0) {
+    selector.previousElementSibling.classList.add("selected");
+  }
+
+  // Select muscle groups from data
+  for (var x = 0; x < data.muscle_groups.length; x++) {
+    selector.querySelector('td[data-name="'+ data.muscle_groups[x] + '"]').classList.add("selected");
+  }
+
+  // function for setting the HTML of each set according to data
+  var setHTML = function (node, data) {
+    node.querySelector(".exercise").value = data.exercise;
+    var set;
+    node.querySelectorAll(".set").forEach(function (n, i) {
+      set = data.sets[i];
+      n.querySelector(".weight-input").value = set.weight;
+      n.querySelector(".weight-type").value = set.weightType;
+      n.querySelector(".rep-input").value = set.reps;
+      n.querySelector(".rep-type").value = set.repType;
+
+      // Position "plus" icons accordingly. Hide non-final ones
+      if (i < data.sets.length - 1) {
+        $(n.querySelector(".plus")).css({
+          "display": "none",
+          "bottom":"-=48px"
+        });
+      }
+    });
+  };
+
+  var index = 0;
+  // Pushes data to repeat node, configures HTML appropriately
+  repeat.push(data.exerciseList, function (node) {
+    setHTML(node, data.exerciseList[index]);
+    index++;
+  });
+};
+
 route.controller(function ($scope, $data, view) {
-  $data.apply();
+
   if (!$data.settings) {
     DB.get("settings").then(function(doc){
       $data.settings = doc.settings;
@@ -94,9 +148,12 @@ route.controller(function ($scope, $data, view) {
     });
   });
 
-
-  $exercises.push(JSON.parse(JSON.stringify(exercise)), modifySetHTML);
-
+  if($data.transferData) {
+    loadState($data.transferData, $exercises);
+  }
+  else {
+    $exercises.push(JSON.parse(JSON.stringify(exercise)), modifySetHTML);
+  }
 
   var funcs = {
     appendSearch: function (node, meta) {
@@ -421,7 +478,7 @@ var WorkoutSaver = (function () {
       return this;
     },
     save: function (date) {
-      data.workout._id = "workout_" + meta.count;
+      data.workout._id = "workout_" + createID(8);
       meta.count ++;
 
       DB.put(data.workout);

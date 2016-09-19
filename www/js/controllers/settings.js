@@ -32,16 +32,22 @@ var pushSettings = function (settings) {
 };
 
 route.controller(function ($scope, $data, view) {
-  DB.get("settings").then(function(doc) {
+  DB.get("settings").catch(function (err){
+    if (err.name === 'not_found') {
+      $data.settings = {};
+      
+      return {
+        _id: "settings",
+        settings: {}
+      };
+    }
+    else throw err;
+  }).then(function(doc) {
     $data.settings = doc.settings || {_id: doc._id};
     console.log($data.settings);
     setSettingHTML($scope, $data.settings);
   }).catch(function (err) {
-    DB.put({
-      _id: "settings",
-      settings: {}
-    });
-    $data.settings = {};
+    // Do stuff
   });
 
   $scope.setTime = function () {

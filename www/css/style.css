@@ -649,10 +649,14 @@ nav.tabs .ind-tab.active {
   color: #0074ac;
 
   padding: 6px 0px;
+
+  width: calc(100% - 16px);
+  text-overflow: ellipsis;
 }
 
 .home-container .exercises-container {
     display: none;
+    position: relative;
 
     background: #bac5ce; /* fallback for old browsers */
     background: -webkit-linear-gradient(to left, #bac5ce , #eef2f3); /* Chrome 10-25, Safari 5.1-6 */
@@ -710,18 +714,37 @@ nav.tabs .ind-tab.active {
   /*color: #0074ac;*/
 }
 
+.delete-workout {
+  display: none;
+
+  position: absolute;
+  padding: 2px;
+
+  color: #f17070;
+}
+
 .workout-name {
+  position: absolute;
   padding-left: 2px;
-  display: inline-block;
-  position: relative;
+  /*display: inline-block;*/
 
   letter-spacing: 1.2px;
   text-transform: uppercase;
 
   width: 45%;
+
+  transition: 0.2s linear;
 }
+
+.workout-name.sticky {
+  opacity: 0.5;
+  transition: 0.2s linear;
+}
+
 .workout-date {
   position: relative;
+
+  margin-left: 45%;
 
   font-weight: 300;
   font-size: 0.9em;
@@ -729,6 +752,15 @@ nav.tabs .ind-tab.active {
   text-align: right;
   /*float: right;*/
   width: 45%;
+}
+
+.exercises-container .repeat {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 11px 8px;
+
+  color: #0074ac;
 }
 
 button.start-button {
