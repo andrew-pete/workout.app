@@ -121,6 +121,18 @@ var loadState = function (data, repeat) {
 };
 
 route.controller(function ($scope, $data, view) {
+  var funcs = {
+    toHome: function(transfer) {
+      if (transfer) {
+        $data.transfer("transferData", "home");
+      }
+      
+      document.body.querySelector("div[page='home']").classList.add("active");
+      document.body.querySelector("div[page='build']").classList.remove("active");
+
+      route.deploy("home");
+    }
+  };
 
   if (!$data.settings) {
     DB.get("settings").then(function(doc){
@@ -193,10 +205,7 @@ route.controller(function ($scope, $data, view) {
     if (confirm) {
       workout.update().save($input);
 
-      document.body.querySelector("div[page='home']").classList.add("active");
-      document.body.querySelector("div[page='build']").classList.remove("active");
-
-      route.deploy("home");
+      funcs.toHome(false);
     }
   };
 

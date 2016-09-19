@@ -1,31 +1,77 @@
+// Must be in form MONTH DD, YYYY
+var monthDictionary = {
+  January : "01",
+  February: "02",
+  March: "03",
+  April: "04",
+  May: "05",
+  June: "06",
+  July: "07",
+  August: "08",
+  September: "09",
+  October: "10",
+  November: "11",
+  December: "12"
+};
+
+var stringToDate = function (dateString) {
+  var firstStop = dateString.indexOf(" "),
+      secondStop = dateString.indexOf(",");
+
+  var date = {
+    day: dateString.slice(firstStop+1,secondStop),
+    month: monthDictionary[dateString.slice(0,firstStop)],
+    year: dateString.slice(secondStop+2)
+  };
+
+  return new Date(date.year, parseInt(date.month)-1, date.day);
+};
+
 route.controller(function ($scope, $data, view) {
+
+  var funcs = {
+    toBuild: function () {
+      if ($data.transferData) {
+        $data.transfer("build", "transferData");
+      }
+
+      document.body.querySelector('div[page="home"]').classList.remove("active");
+      document.body.querySelector('div[page="build"]').classList.add("active");
+      route.deploy("build");
+    }
+  };
+
   var $workouts = $scope.repeat("workouts");
 
   DB.allDocs({
     include_docs: true
   }).then(function (results) {
     console.log(results);
-    $data.workouts = results.rows.reverse();
-    $data.workouts.forEach(function (o) {
-
-      if (o.id.match(/workout/ig)) {
-        $workouts.push(o.doc, function (workout) {
-          workout.setAttribute("data-doc_id", o.id);
-          workout.querySelectorAll(".set-container").forEach(function (set){
-            if (!set.querySelector(".weight").innerText) {
-              set.querySelector(".weight-type").style.display = "none";
-              set.querySelector(".times").style.display = "none";
-            }
-            if (!set.querySelector(".reps").innerText) {
-              set.querySelector(".rep-type").style.display = "none";
-              set.querySelector(".times").style.display = "none";
-            }
-          });
-        });
-      }
-      else if (o.id == "settings") {
+    $data.workouts = results.rows.filter(function(o) {
+      if (o.id == "settings") {
         $data.settings = o.doc.settings;
       }
+      return o.id.match(/workout/ig);
+    }).sort(function (a,b) {
+      console.log(a);
+      return stringToDate(a.doc.date) < stringToDate(b.doc.date);
+    });
+
+    $data.workouts.forEach(function (o) {
+      $workouts.push(o.doc, function (workout) {
+        workout.setAttribute("data-doc_id", o.id);
+        console.log(stringToDate(o.doc.date));
+        workout.querySelectorAll(".set-container").forEach(function (set){
+          if (!set.querySelector(".weight").innerText) {
+            set.querySelector(".weight-type").style.display = "none";
+            set.querySelector(".times").style.display = "none";
+          }
+          if (!set.querySelector(".reps").innerText) {
+            set.querySelector(".rep-type").style.display = "none";
+            set.querySelector(".times").style.display = "none";
+          }
+        });
+      });
 
     });
 
@@ -56,16 +102,15 @@ route.controller(function ($scope, $data, view) {
       DB.get(id).then(function (response) {
         $data.transferData = response;
         console.log($data);
-        $data.transfer("build", "transferData");
-        $scope.toBuild();
+        funcs.toBuild();
       });
     }
   };
+  console.log($data);
 
-  $scope.toBuild = function () {
-    document.body.querySelector('div[page="home"]').classList.remove("active");
-    document.body.querySelector('div[page="build"]').classList.add("active");
-    route.deploy("build");
+  $scope.newWorkout = function () {
+    $data.transferData = null;
+    funcs.toBuild();
     // $data.transfer("build", "settings");
   };
 
