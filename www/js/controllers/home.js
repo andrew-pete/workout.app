@@ -46,21 +46,18 @@ route.controller(function ($scope, $data, view) {
   DB.allDocs({
     include_docs: true
   }).then(function (results) {
-    console.log(results);
     $data.workouts = results.rows.filter(function(o) {
       if (o.id == "settings") {
         $data.settings = o.doc.settings;
       }
       return o.id.match(/workout/ig);
     }).sort(function (a,b) {
-      console.log(a);
       return stringToDate(a.doc.date) < stringToDate(b.doc.date);
     });
 
     $data.workouts.forEach(function (o) {
       $workouts.push(o.doc, function (workout) {
         workout.setAttribute("data-doc_id", o.id);
-        console.log(stringToDate(o.doc.date));
         workout.querySelectorAll(".set-container").forEach(function (set){
           if (!set.querySelector(".weight").innerText) {
             set.querySelector(".weight-type").style.display = "none";
@@ -97,7 +94,7 @@ route.controller(function ($scope, $data, view) {
 
   $scope.repeatWorkout = function () {
     var id = this.parentNode.parentNode.getAttribute("data-doc_id");
-    var confirm = window.confirm("Do this workout again?");
+    var confirm = window.confirm("Repeat this workout?");
     if (confirm) {
       DB.get(id).then(function (response) {
         $data.transferData = response;
@@ -144,21 +141,24 @@ route.controller(function ($scope, $data, view) {
     },
     touchmove: {
       trackSlide: function (e) {
-        var deltaX = e.touches[0].pageX - touch_data.firstTouch.pageX;
+        var deltaX = e.touches[0].pageX - touch_data.firstTouch.pageX,
+            deltaY = e.touches[0].pageY - touch_data.firstTouch.pageY;
 
-        if (deltaX > 0 && (!touch_data.movingNode.style.marginLeft || parseInt(touch_data.movingNode.style.marginLeft) < 24)) {
-          touch_data.movingNode.style.marginLeft = "24px";
-        }
-        else if (deltaX < 0) {
-          if (touch_data.movingNode.classList.contains("sticky")) {
-            touch_data.movingNode.style.marginLeft = 0;
-            touch_data.movingNode.classList.remove("sticky");
-            $(touch_data.movingNode.previousSibling.previousSibling).fadeOut(200);
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+          if (deltaX > 0 && (!touch_data.movingNode.style.marginLeft || parseInt(touch_data.movingNode.style.marginLeft) < 24)) {
+            touch_data.movingNode.style.marginLeft = "24px";
           }
-        }
-        else {
-          $(touch_data.movingNode).addClass("sticky");
-          $(touch_data.movingNode.previousSibling.previousSibling).fadeIn(300);
+          else if (deltaX < 0) {
+            if (touch_data.movingNode.classList.contains("sticky")) {
+              touch_data.movingNode.style.marginLeft = 0;
+              touch_data.movingNode.classList.remove("sticky");
+              $(touch_data.movingNode.previousSibling.previousSibling).fadeOut(200);
+            }
+          }
+          else {
+            $(touch_data.movingNode).addClass("sticky");
+            $(touch_data.movingNode.previousSibling.previousSibling).fadeIn(300);
+          }
         }
       }
     },

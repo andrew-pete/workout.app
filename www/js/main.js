@@ -56,6 +56,12 @@ domReady(function () {
     d.addEventListener("click", function () {
       document.querySelector(".active").classList.remove("active");
       d.classList.add("active");
+      if (d.getAttribute("page") === "info") {
+        $(".clock").fadeOut();
+      }
+      else {
+        $(".clock").fadeIn();
+      }
       route.deploy(d.getAttribute("page"));
     });
   });
@@ -67,12 +73,14 @@ domReady(function () {
     .add("home", "views/home.html", "js/controllers/home.js")
     .add("build", "views/build.html", "js/controllers/build.js")
     .add("dashboard", "views/dashboard.html", "js/controllers/dashboard.js")
+    .add("info", "views/info.html", "js/controllers/info.js")
     .add("settings", "views/settings.html", "js/controllers/settings.js");
 
   var transition = new Transition()
     .addView("home", 0)
     .addView("build", 1)
     .addView("dashboard", 2)
+    .addView("info", 3)
     .addView("settings", -1)
     .transition(800);
 

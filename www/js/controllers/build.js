@@ -121,12 +121,12 @@ var loadState = function (data, repeat) {
 };
 
 route.controller(function ($scope, $data, view) {
-  var funcs = {
+  var utils = {
     toHome: function(transfer) {
       if (transfer) {
         $data.transfer("transferData", "home");
       }
-      
+
       document.body.querySelector("div[page='home']").classList.add("active");
       document.body.querySelector("div[page='build']").classList.remove("active");
 
@@ -205,7 +205,7 @@ route.controller(function ($scope, $data, view) {
     if (confirm) {
       workout.update().save($input);
 
-      funcs.toHome(false);
+      utils.toHome(false);
     }
   };
 
@@ -320,14 +320,13 @@ route.controller(function ($scope, $data, view) {
         var val = this.value,
             node;
         this.value = "";
+        console.log("here", $exercises.get());
 
         $exercises.push(JSON.parse(JSON.stringify(exercise)), function (o) {
+          console.log(o);
           modifySetHTML(o, $data.settings);
           node = o.querySelector("input.exercise");
         });
-
-        // window.newnode = node;
-        var top = node.getBoundingClientRect().top + window.scrollY;
 
         funcs.appendSearch(node, meta).value = val;
 

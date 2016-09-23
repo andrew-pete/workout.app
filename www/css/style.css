@@ -285,10 +285,12 @@ nav.tabs .ind-tab {
 
   text-align: center;
 
-  padding: 10px 0;
-  margin: 0;
+  padding: 10px 0px;
+  margin: 0 -2px;
 
-  width: calc(33vw - 2px);
+  width: calc(25vw);
+
+  transition: all 0.2s linear;
 
   /*border-left: 1px*/
 }
@@ -609,10 +611,10 @@ select.rep-type {
 .inline-block {
   display: inline-block;
 }
-
 nav.tabs .ind-tab.active {
-  box-shadow: 0 1px 3px 1px inset;
-  color: #777;
+  /*box-shadow: 0 1px 3px 1px inset;*/
+  color: #58a7dc;
+  transition: all 0.2s linear;
 }
 .header h1 {
   color: #0074c2;
@@ -640,6 +642,10 @@ nav.tabs .ind-tab.active {
 
   color: rgba(255,255,255, 0.8);
   border-top: 1px solid rgba(255,255,255, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+  background:#0074ac;
 }
 
 .exercise-name {
@@ -827,7 +833,7 @@ button.start-button:hover{
 
 /* SETTINGS CSS */
 
-.settings-container {
+.settings-container, .info-container {
   height: calc(100vh - 20px - 47px);
   width: 100vw;
   background:#dfdfdf;
@@ -911,4 +917,203 @@ button.start-button:hover{
 .setting .down-select {
   font-size: 0.9em;
   opacity: 0.5;
+}
+
+/* INFO CSS */
+.info-container {
+  position: relative;
+
+  width: calc(100vw);
+  /*padding: 0px 8px;*/
+
+}
+.info-search {
+  width: calc(100vw - 6px - 36px);
+  background: #f2f2f2;
+  letter-spacing: 1.2px;
+
+  font-size: 0.9em;
+
+  color: #444;
+
+  padding-right: 36px;
+
+  text-overflow: ellipsis;
+
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+}
+
+.info-container .fa-search {
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 8px 10px 9px 10px;
+
+  background: rgba(0,0,0,0.03);
+}
+
+.info-exercise-container {
+  max-height: calc(100vh - 49px - 20px - 34px);
+  overflow-y: scroll;
+  width: calc(100vw - 12px);
+  padding: 4px 6px 2px 6px;
+  z-index: 10;
+  background: #f2f2f2;
+}
+
+.empty-search {
+  position: absolute;
+  margin-top: 20vh;
+  left: 0;
+  right: 0;
+  text-align: center;
+  letter-spacing: 1px;
+  font-size: 1.2em;
+  font-weight: 300;
+}
+
+.info-name {
+  font-size: 1.4em;
+  text-transform: uppercase;
+  font-weight: 300;
+  padding: 6px 0 10px 0;
+  color: #0074c2;
+}
+
+.guide-container {
+  padding-top: 8px;
+
+}
+
+.guide-header {
+  width: calc(100vw - 12px);
+  padding: 6px 6px;
+
+  margin-left: -6px;
+
+  font-size: 1.1em;
+  letter-spacing: 1.2px;
+
+  border-top: 1px solid rgba(0,0,0, 0.05);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.guide-header .caret-down {
+  color: rgba(0,0,0,0.4);
+}
+
+ul.guide {
+  padding: 2px 0px;
+  list-style-type: circle;
+  color: #777;
+  letter-spacing: 0.6px;
+
+  width: calc(100vw - 12px);
+  margin-left: -6px;
+
+  margin-bottom: 2px;
+  padding: 0px 6px;
+
+  /*max-height: 42vh;*/
+  /*overflow-y: scroll;*/
+}
+
+ul.guide li {
+  /*display: inline;*/
+  font-size: 0.87em;
+  margin: 6px 0;
+  list-style-type: circle !important;
+
+
+}
+
+img.left-photo, img.right-photo{
+  width: calc(50% - 2px);
+  background: #fafafa;
+  border-radius: 3px;
+
+  margin-bottom: 8px;
+}
+
+.muscle-groups {
+  margin-bottom: 6px;
+}
+
+.muscle-groups .main {
+  display: inline-block;
+  font-size: 0.9em;
+  color: #0074c2;
+  width: calc(100%);
+  /*text-align: right;*/
+}
+
+.muscle-groups .secondary {
+  width: 100%;
+  /*text-align: right;*/
+  font-size: 0.9em;
+  color: #0074c2;
+  opacity: 0.4;
+}
+
+.muscle-groups-header {
+  display: inline-block;
+  position: absolute;
+  padding: 7px 0;
+  width: 140px;
+  font-size: 1.1em;
+  letter-spacing: 1.2px;
+}
+
+.info-container .search-container {
+  /*z-index: -1;*/
+  display: block;
+  position: relative;
+  /*margin-left: -6px;*/
+  width: calc(100vw - 12px);
+  background: #f2f2f2;
+
+  max-height: 300px;
+  overflow-y: scroll;
+
+  transition: 0.3s ease-in-out;
+}
+
+.search-container.closed {
+  max-height: 0;
+
+  transition: 0.3s ease-in-out;
+
+}
+
+.search-row img {
+  z-index: 0;
+  position: absolute;
+  max-height: 48px;
+  right: 16px;
+  border-radius: 3px;
+}
+
+.search-row .search-name {
+  display: inline-block;
+  font-size: 1.2em;
+  height: 48px;
+  line-height: 48px;
+
+  width: calc(100% - 80px);
+  white-space: nowrap;
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+
+  /*height: 67px;*/
+}
+
+
+.search-row {
+  width: calc(100% - 16px);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+
+  padding: 8px 0;
+  height: 48px;
 }

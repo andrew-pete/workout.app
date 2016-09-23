@@ -1,0 +1,28 @@
+<div class="info-container">
+    <input type="text" class="info-search" b-input="searchData" b-name="search" placeholder="Search..."></input>
+    <i class="fa fa-search"></i>
+    <div class="search-container" b-name=searchContainer>
+      <div class="search-row" b-repeat="search">
+        <div class="search-name" b-prop="Name"></div>
+        <img class="search-img" b-src="pic_right"></img>
+      </div>
+    </div>
+    <p class="empty-search">Search to Learn More.</p>
+  <div class="info-exercise-container" b-repeat="exercises">
+    <div class="info-name" b-prop="Name"></div>
+    <img class="left-photo" b-src="pic_left"></img>
+    <img class="right-photo" b-src="pic_right"></img>
+
+    <div class="muscle-groups">
+      <!-- <div class="muscle-groups-header">Muscle Groups:</div> -->
+      <div class="main" b-prop="main_muscle"></div>
+      <div class="secondary" b-prop="secondary_muscles"></div>
+    </div>
+
+    <div class="guide-container">
+      <div class="guide-header">Guide</div>
+      <div class="info-guide" b-prop="Guide"></div>
+    </div>
+
+  </div>
+</div>
